@@ -24,7 +24,7 @@ lexer: lexer.l grammar lexglobal.h
 	gcc -o lexer.o -c lexer.c 
 	
 clean: 
-	rm -f grammar.c grammar.h grammar.out parser *.o
+	rm -f lemon grammar.c grammar.h grammar.out parser *.o
 	  
 
 

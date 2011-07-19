@@ -1,0 +1,78 @@
+ State 0:
+          result ::= * expr
+          expr ::= * LIKES VALUE
+          expr ::= * HATES VALUE
+          expr ::= * FROM VALUE
+          expr ::= * MOODS VALUE
+          expr ::= * INFO VALUE
+          expr ::= * VALUE
+
+                         LIKES shift  2
+                         MOODS shift  8
+                          FROM shift  6
+                         HATES shift  4
+                          INFO shift  10
+                         VALUE shift  12
+                        result accept
+                          expr shift  1
+
+State 1:
+      (0) result ::= expr *
+
+                             $ reduce 0
+
+State 2:
+          expr ::= LIKES * VALUE
+
+                         VALUE shift  3
+
+State 3:
+      (1) expr ::= LIKES VALUE *
+
+                             $ reduce 1
+
+State 4:
+          expr ::= HATES * VALUE
+
+                         VALUE shift  5
+
+State 5:
+      (2) expr ::= HATES VALUE *
+
+                             $ reduce 2
+
+State 6:
+          expr ::= FROM * VALUE
+
+                         VALUE shift  7
+
+State 7:
+      (3) expr ::= FROM VALUE *
+
+                             $ reduce 3
+
+State 8:
+          expr ::= MOODS * VALUE
+
+                         VALUE shift  9
+
+State 9:
+      (4) expr ::= MOODS VALUE *
+
+                             $ reduce 4
+
+State 10:
+          expr ::= INFO * VALUE
+
+                         VALUE shift  11
+
+State 11:
+      (5) expr ::= INFO VALUE *
+
+                             $ reduce 5
+
+State 12:
+      (6) expr ::= VALUE *
+
+                             $ reduce 6
+

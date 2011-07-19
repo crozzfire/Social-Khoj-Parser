@@ -25,6 +25,6 @@ lexer: lexer.l grammar lexglobal.h
 	
 clean: 
 	rm -f lemon grammar.c grammar.h grammar.out parser *.o
-	  
+	rm -r Debug  
 
 

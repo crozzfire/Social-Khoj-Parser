@@ -1,7 +1,0 @@
-Debug/
-parser
-grammar.c
-grammar.h
-grammar.out
-lexer.o
-lemon

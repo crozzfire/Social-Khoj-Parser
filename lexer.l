@@ -1,7 +1,7 @@
 %{
 #include <string.h>
-#include "grammar.h"
 #include "lexglobal.h" 
+#include "grammar.h"
 %}
 
 %%
@@ -13,12 +13,17 @@
 "moods:"           {  yysval.sval = (char*)yytext;return MOODS; }
 "info:"           {  yysval.sval = (char*)yytext;return INFO; }
 
-[A-Za-z][A-Za-z0-9]*                   {
+[A-Za-z0-9]*                   {
 												yysval.sval = (char*)yytext; 
                                                 return VALUE;
                                       }
+
+L?\"(\\.|[^\\"])*\"                  {
+                                                yysval.sval = (char*)yytext; 
+                                                return VALUE;
+}
+
                                                
-[ \t]   								{}
 %%
 
 /**

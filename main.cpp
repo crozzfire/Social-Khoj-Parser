@@ -14,8 +14,11 @@
 #include <stdlib.h>
 #include "jsonencoder.cpp"
 #include <libgearman/gearman.h>
+#include "grammar.h"
+#include "lexglobal.h"
 
 #define BUFS 1024
+int state = 0;
 
 extern FILE *yyin;
 typedef struct yy_buffer_state *YY_BUFFER_STATE;
@@ -26,16 +29,21 @@ YY_BUFFER_STATE yy_scan_string(const char *);
 void yy_delete_buffer(YY_BUFFER_STATE);
 }
 
+int getState() {
+	return state;
+}
+
+void switchOn(int type) {
+	state = type;
+}
+
 void *do_parse(gearman_job_st *job, void *context, size_t *result_size,
 		gearman_return_t *ret_ptr) {
 
-	int n;
 	int yv;
 	char *buf;
 	JSONEncoder json = JSONEncoder();
 	buf = strdup((char *) gearman_job_workload(job));
-
-	void* pParser = ParseAlloc(malloc);
 
 	yy_scan_string(buf);
 
@@ -45,21 +53,59 @@ void *do_parse(gearman_job_st *job, void *context, size_t *result_size,
 		int token = yv;
 		char *value = (char*) yysval.sval;
 
-		Parse(pParser, token, value);
+		switch (token) {
+		case LIKES:
+			switchOn(LIKES);
+			break;
+		case HATES:
+			switchOn(HATES);
+			break;
+		case FROM:
+			switchOn(FROM);
+			break;
+		case MOODS:
+			switchOn(MOODS);
+			break;
+		case INFO:
+			switchOn(INFO);
+			break;
 
-		if (token == VALUE) {
-			Parse(pParser, 0, 0);
+		case VALUE:
+			Data *data = Data::getInstance();
+
+			switch (getState()) {
+			case LIKES:
+				data->likes.push_back(value);
+				break;
+			case HATES:
+				data->hates.push_back(value);
+				break;
+			case INFO:
+				data->info.push_back(value);
+				break;
+			case MOODS:
+				data->moods.push_back(value);
+				break;
+			case FROM:
+				data->from.push_back(value);
+				break;
+
+			default:
+				data->vals.push_back(value); //push all the vals to a list if no identifier is present
+				break;
+
+			}
 		}
 
-
 	}
-	ParseFree(pParser, free);
 
 	char* result = strdup(json.encodeParsed());
 	*result_size = strlen(result);
 	*ret_ptr = GEARMAN_SUCCESS;
 
 	Data::getInstance()->free();
+	state=0;
+
 	return result;
 
 }

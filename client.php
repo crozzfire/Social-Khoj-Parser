@@ -8,7 +8,7 @@ $gmclient->addServer();
 
 # run reverse client in the background
 
-$job_handle = $gmclient->do("parser", "moods: sad likes: hello how are you hates: wtf?");
+$job_handle = $gmclient->do("parser", "likes: \"hello man\" whats up wtf HATES: FUCK YOU dude");
 var_dump(json_decode($job_handle));
 
 if ($gmclient->returnCode() != GEARMAN_SUCCESS)

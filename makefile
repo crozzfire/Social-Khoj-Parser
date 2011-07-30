@@ -6,25 +6,17 @@ CFLAGS = -Wall -W -O2 -s -pipe
 CLMFLAGS = -Wall -W -O2 -s -pipe -lm
 LFLAGS =  -O2 -s -pipe
 
-all: lemon grammar parser lexer
+all: parser lexer
 
-parser: grammar.c lexer
-	cat main.cpp >> grammar.c
-	g++ -o parser $(LFLAGS) grammar.c lexer.o -lgearman
+parser: main.cpp lexer
+	g++ -o parser $(LFLAGS) main.cpp lexer.o -lgearman
 
-grammar: grammar.y lemon
-	  ./lemon grammar.y
-
-lemon: lemon.c
-	  gcc -o $@ $(LFLAGS)  $<
-
-lexer: lexer.l grammar lexglobal.h
+lexer: lexer.l grammar.h lexglobal.h
 	flex -i lexer.l
 	test -e lex.yy.c && mv lex.yy.c lexer.c
 	gcc -o lexer.o -c lexer.c 
 	
 clean: 
 	rm -f lemon grammar.c grammar.h grammar.out parser *.o
-	rm -r Debug  
 
 

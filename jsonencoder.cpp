@@ -6,6 +6,8 @@
  */
 
 #include <string>
+#include <iostream>
+#include "data.cpp"
 
 class JSONEncoder {
 
@@ -25,7 +27,7 @@ public:
 
 	char* encodeParsed() {
 
-		Data *data=Data::getInstance();
+		Data *data = Data::getInstance();
 
 		STRING_BEGIN = "\"";
 		STRING_END = "\"";
@@ -43,7 +45,19 @@ public:
 		t_ += ARRAY_BEGIN;
 		for (std::vector<std::string>::iterator it = data->likes.begin(); it
 				!= data->likes.end(); ++it) {
-			t_ += STRING_BEGIN + *it + STRING_END;
+			std::string i_ = *it;
+			int pos = 0;
+			std::string replace = "\\\"";
+			while (true) {
+				pos = i_.find("\"", pos);
+				if (pos == std::string::npos)
+					break;
+
+				i_.replace(pos, replace.size() - 1, replace);
+				pos += replace.size();
+			}
+
+			t_ += STRING_BEGIN + i_ + STRING_END;
 
 			if (it != data->likes.end() - 1)
 				t_ += NVP_SEPARATOR;
@@ -56,7 +70,19 @@ public:
 		t_ += ARRAY_BEGIN;
 		for (std::vector<std::string>::iterator it = data->hates.begin(); it
 				!= data->hates.end(); ++it) {
-			t_ += STRING_BEGIN + *it + STRING_END;
+			std::string i_ = *it;
+			int pos = 0;
+			std::string replace = "\\\"";
+			while (true) {
+				pos = i_.find("\"", pos);
+				if (pos == std::string::npos)
+					break;
+
+				i_.replace(pos, replace.size() - 1, replace);
+				pos += replace.size();
+			}
+
+			t_ += STRING_BEGIN + i_ + STRING_END;
 
 			if (it != data->hates.end() - 1)
 				t_ += NVP_SEPARATOR;
@@ -69,7 +95,19 @@ public:
 		t_ += ARRAY_BEGIN;
 		for (std::vector<std::string>::iterator it = data->moods.begin(); it
 				!= data->moods.end(); ++it) {
-			t_ += STRING_BEGIN + *it + STRING_END;
+			std::string i_ = *it;
+			int pos = 0;
+			std::string replace = "\\\"";
+			while (true) {
+				pos = i_.find("\"", pos);
+				if (pos == std::string::npos)
+					break;
+
+				i_.replace(pos, replace.size() - 1, replace);
+				pos += replace.size();
+			}
+
+			t_ += STRING_BEGIN + i_ + STRING_END;
 
 			if (it != data->moods.end() - 1)
 				t_ += NVP_SEPARATOR;
@@ -82,9 +120,46 @@ public:
 		t_ += ARRAY_BEGIN;
 		for (std::vector<std::string>::iterator it = data->from.begin(); it
 				!= data->from.end(); ++it) {
-			t_ += STRING_BEGIN + *it + STRING_END;
+			std::string i_ = *it;
+			int pos = 0;
+			std::string replace = "\\\"";
+			while (true) {
+				pos = i_.find("\"", pos);
+				if (pos == std::string::npos)
+					break;
+
+				i_.replace(pos, replace.size() - 1, replace);
+				pos += replace.size();
+			}
+
+			t_ += STRING_BEGIN + i_ + STRING_END;
 
 			if (it != data->from.end() - 1)
+				t_ += NVP_SEPARATOR;
+		}
+		t_ += ARRAY_END;
+		t_ += NVP_SEPARATOR;
+
+		t_ += STRING_BEGIN + "others" + STRING_END;
+		t_ += NVP_INIT;
+		t_ += ARRAY_BEGIN;
+		for (std::vector<std::string>::iterator it = data->vals.begin(); it
+				!= data->vals.end(); ++it) {
+			std::string i_ = *it;
+			int pos = 0;
+			std::string replace = "\\\"";
+			while (true) {
+				pos = i_.find("\"", pos);
+				if (pos == std::string::npos)
+					break;
+
+				i_.replace(pos, replace.size() - 1, replace);
+				pos += replace.size();
+			}
+
+			t_ += STRING_BEGIN + i_ + STRING_END;
+
+			if (it != data->vals.end() - 1)
 				t_ += NVP_SEPARATOR;
 		}
 		t_ += ARRAY_END;
@@ -95,7 +170,19 @@ public:
 		t_ += ARRAY_BEGIN;
 		for (std::vector<std::string>::iterator it = data->info.begin(); it
 				!= data->info.end(); ++it) {
-			t_ += STRING_BEGIN + *it + STRING_END;
+			std::string i_ = *it;
+			int pos = 0;
+			std::string replace = "\\\"";
+			while (true) {
+				pos = i_.find("\"", pos);
+				if (pos == std::string::npos)
+					break;
+
+				i_.replace(pos, replace.size() - 1, replace);
+				pos += replace.size();
+			}
+
+			t_ += STRING_BEGIN + i_ + STRING_END;
 
 			if (it != data->info.end() - 1)
 				t_ += NVP_SEPARATOR;

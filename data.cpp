@@ -16,6 +16,7 @@ public:
 	std::vector<std::string> from;
 	std::vector<std::string> moods;
 	std::vector<std::string> info;
+	std::vector<std::string> vals;
 
 	static Data* getInstance() {
 		if (hasInstance_ == false) {
@@ -37,6 +38,7 @@ public:
 		from.clear();
 		hates.clear();
 		info.clear();
+		vals.clear();
 	}
 private:
 	static Data *inst_;
@@ -48,8 +50,3 @@ private:
 
 bool Data::hasInstance_ = false;
 Data* Data::inst_ = NULL;
-
-const char* removeQuotes(const char *s_) {
-	std::string t_(s_);
-	return t_.substr(t_.find_first_of("\"") + 1, t_.find_last_of("\"") - 1).c_str();
-}
